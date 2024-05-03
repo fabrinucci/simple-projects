@@ -10,9 +10,27 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { gradientDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import type { Question as IQuestion } from '../types';
+import { useQuestionsStore } from '../store/questions.store';
+
+const getBackgroundColor = (info: IQuestion, asnwerIndex: number) => {
+	const { userSelectedAnswer, correctAnswer } = info;
+
+	if (userSelectedAnswer == null) return 'transparent';
+	if (asnwerIndex !== correctAnswer && asnwerIndex !== userSelectedAnswer)
+		return 'transparent';
+	if (asnwerIndex === correctAnswer) return 'green';
+	if (asnwerIndex === userSelectedAnswer) return 'red';
+
+	return 'transparent';
+};
 
 export const Question = ({ info }: { info: IQuestion }) => {
-	const { id, answers, code, question } = info;
+	const selectedAnswer = useQuestionsStore((state) => state.selectedAnswer);
+
+	const handleSelectedAnswer = (asnwerIndex: number) => () => {
+		selectedAnswer(info.id, asnwerIndex);
+	};
+
 	return (
 		<Card
 			sx={{
@@ -20,19 +38,24 @@ export const Question = ({ info }: { info: IQuestion }) => {
 				bgcolor: '#8125a9bc',
 			}}
 			variant='outlined'>
-			<div key={id}>
-				<Typography variant='h4'>{question}</Typography>
+			<div key={info.id}>
+				<Typography variant='h4'>{info.question}</Typography>
 				<SyntaxHighlighter language='javascript' style={gradientDark}>
-					{code}
+					{info.code}
 				</SyntaxHighlighter>
 				<List
 					sx={{
 						bgcolor: '#9734c1bb',
 					}}
 					disablePadding>
-					{answers.map((answer, index) => (
-						<ListItem key={index} disablePadding divider>
-							<ListItemButton>
+					{info.answers.map((answer, asnwerIndex) => (
+						<ListItem key={asnwerIndex} disablePadding divider>
+							<ListItemButton
+								disabled={info.userSelectedAnswer != null}
+								onClick={handleSelectedAnswer(asnwerIndex)}
+								sx={{
+									bgcolor: getBackgroundColor(info, asnwerIndex),
+								}}>
 								<ListItemText sx={{ textAlign: 'center' }} primary={answer} />
 							</ListItemButton>
 						</ListItem>
