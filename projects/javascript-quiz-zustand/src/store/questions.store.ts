@@ -10,6 +10,7 @@ interface QuestionsState {
 	selectedAnswer: (questionId: number, answerIndex: number) => void;
 	getPrevQuestion: () => void;
 	getNextQuestion: () => void;
+	reset: () => void;
 }
 
 export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
@@ -58,6 +59,13 @@ export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
 
 		set({
 			currentQuestion: nextQuestion,
+		});
+	},
+
+	reset() {
+		set({
+			questions: [],
+			currentQuestion: 0,
 		});
 	},
 }));
