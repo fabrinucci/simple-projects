@@ -32,7 +32,7 @@ function App() {
 					</Stack>
 					<Stack
 						padding={2}
-						direction='row'
+						direction='column'
 						gap={2}
 						alignItems='center'
 						justifyContent='center'>

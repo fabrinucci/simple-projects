@@ -26,7 +26,6 @@ const getBackgroundColor = (info: IQuestion, asnwerIndex: number) => {
 
 export const Question = ({ info }: { info: IQuestion }) => {
 	const selectedAnswer = useQuestionsStore((state) => state.selectedAnswer);
-
 	const handleSelectedAnswer = (asnwerIndex: number) => () => {
 		selectedAnswer(info.id, asnwerIndex);
 	};
@@ -38,30 +37,28 @@ export const Question = ({ info }: { info: IQuestion }) => {
 				bgcolor: '#8125a9bc',
 			}}
 			variant='outlined'>
-			<div key={info.id}>
-				<Typography variant='h4'>{info.question}</Typography>
-				<SyntaxHighlighter language='javascript' style={gradientDark}>
-					{info.code}
-				</SyntaxHighlighter>
-				<List
-					sx={{
-						bgcolor: '#9734c1bb',
-					}}
-					disablePadding>
-					{info.answers.map((answer, asnwerIndex) => (
-						<ListItem key={asnwerIndex} disablePadding divider>
-							<ListItemButton
-								disabled={info.userSelectedAnswer != null}
-								onClick={handleSelectedAnswer(asnwerIndex)}
-								sx={{
-									bgcolor: getBackgroundColor(info, asnwerIndex),
-								}}>
-								<ListItemText sx={{ textAlign: 'center' }} primary={answer} />
-							</ListItemButton>
-						</ListItem>
-					))}
-				</List>
-			</div>
+			<Typography variant='h4'>{info.question}</Typography>
+			<SyntaxHighlighter language='javascript' style={gradientDark}>
+				{info.code}
+			</SyntaxHighlighter>
+			<List
+				sx={{
+					bgcolor: '#9734c1bb',
+				}}
+				disablePadding>
+				{info.answers.map((answer, asnwerIndex) => (
+					<ListItem key={asnwerIndex} disablePadding divider>
+						<ListItemButton
+							disabled={info.userSelectedAnswer != null}
+							onClick={handleSelectedAnswer(asnwerIndex)}
+							sx={{
+								bgcolor: getBackgroundColor(info, asnwerIndex),
+							}}>
+							<ListItemText sx={{ textAlign: 'center' }} primary={answer} />
+						</ListItemButton>
+					</ListItem>
+				))}
+			</List>
 		</Card>
 	);
 };

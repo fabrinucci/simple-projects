@@ -5,8 +5,11 @@ import confetti from 'canvas-confetti';
 interface QuestionsState {
 	questions: Question[];
 	currentQuestion: number;
+
 	fetchQuestions: (limit: number) => Promise<void>;
 	selectedAnswer: (questionId: number, answerIndex: number) => void;
+	getPrevQuestion: () => void;
+	getNextQuestion: () => void;
 }
 
 export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
@@ -36,5 +39,25 @@ export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
 		};
 
 		set({ questions: newQuestions });
+	},
+
+	getPrevQuestion() {
+		const { currentQuestion } = get();
+		const prevQuestion = currentQuestion - 1;
+		if (currentQuestion === 0) return;
+
+		set({
+			currentQuestion: prevQuestion,
+		});
+	},
+
+	getNextQuestion() {
+		const { questions, currentQuestion } = get();
+		const nextQuestion = currentQuestion + 1;
+		if (questions.length === nextQuestion) return;
+
+		set({
+			currentQuestion: nextQuestion,
+		});
 	},
 }));
