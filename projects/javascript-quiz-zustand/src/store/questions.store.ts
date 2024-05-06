@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import type { Question } from '../types';
+import { create, StateCreator } from 'zustand';
 import confetti from 'canvas-confetti';
+import type { Question } from '../types';
 
 interface QuestionsState {
 	questions: Question[];
@@ -13,7 +13,7 @@ interface QuestionsState {
 	reset: () => void;
 }
 
-export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
+const storeApi: StateCreator<QuestionsState> = (set, get) => ({
 	questions: [],
 	currentQuestion: 0,
 
@@ -42,7 +42,7 @@ export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
 		set({ questions: newQuestions });
 	},
 
-	getPrevQuestion() {
+	getPrevQuestion: () => {
 		const { currentQuestion } = get();
 		const prevQuestion = currentQuestion - 1;
 		if (currentQuestion === 0) return;
@@ -52,7 +52,7 @@ export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
 		});
 	},
 
-	getNextQuestion() {
+	getNextQuestion: () => {
 		const { questions, currentQuestion } = get();
 		const nextQuestion = currentQuestion + 1;
 		if (questions.length === nextQuestion) return;
@@ -62,10 +62,12 @@ export const useQuestionsStore = create<QuestionsState>()((set, get) => ({
 		});
 	},
 
-	reset() {
+	reset: () => {
 		set({
 			questions: [],
 			currentQuestion: 0,
 		});
 	},
-}));
+});
+
+export const useQuestionsStore = create<QuestionsState>()(storeApi);
