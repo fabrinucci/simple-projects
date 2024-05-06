@@ -1,4 +1,5 @@
 import { create, StateCreator } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 import confetti from 'canvas-confetti';
 import type { Question } from '../types';
 
@@ -13,7 +14,10 @@ interface QuestionsState {
 	reset: () => void;
 }
 
-const storeApi: StateCreator<QuestionsState> = (set, get) => ({
+const storeApi: StateCreator<QuestionsState, [['zustand/devtools', never]]> = (
+	set,
+	get,
+) => ({
 	questions: [],
 	currentQuestion: 0,
 
@@ -22,7 +26,7 @@ const storeApi: StateCreator<QuestionsState> = (set, get) => ({
 		const json: Question[] = await res.json();
 
 		const questions = json.sort(() => Math.random() - 0.5).slice(0, limit);
-		set({ questions });
+		set({ questions }, false, 'FETCH_QUESTIONS');
 	},
 
 	selectedAnswer: (questionId, asnwerIndex) => {
@@ -39,7 +43,7 @@ const storeApi: StateCreator<QuestionsState> = (set, get) => ({
 			isCorrectUserAnswer,
 		};
 
-		set({ questions: newQuestions });
+		set({ questions: newQuestions }, false, 'SELECTED_ANSWER');
 	},
 
 	getPrevQuestion: () => {
@@ -47,9 +51,7 @@ const storeApi: StateCreator<QuestionsState> = (set, get) => ({
 		const prevQuestion = currentQuestion - 1;
 		if (currentQuestion === 0) return;
 
-		set({
-			currentQuestion: prevQuestion,
-		});
+		set({ currentQuestion: prevQuestion }, false, 'GET_PREV_QUESTION');
 	},
 
 	getNextQuestion: () => {
@@ -57,17 +59,27 @@ const storeApi: StateCreator<QuestionsState> = (set, get) => ({
 		const nextQuestion = currentQuestion + 1;
 		if (questions.length === nextQuestion) return;
 
-		set({
-			currentQuestion: nextQuestion,
-		});
+		set(
+			{
+				currentQuestion: nextQuestion,
+			},
+			false,
+			'GET_NEXT_QUESTION',
+		);
 	},
 
 	reset: () => {
-		set({
-			questions: [],
-			currentQuestion: 0,
-		});
+		set(
+			{
+				questions: [],
+				currentQuestion: 0,
+			},
+			false,
+			'RESET',
+		);
 	},
 });
 
-export const useQuestionsStore = create<QuestionsState>()(storeApi);
+export const useQuestionsStore = create<QuestionsState>()(
+	devtools(persist(storeApi, { name: 'question-store' })),
+);
