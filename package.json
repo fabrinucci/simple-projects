@@ -1,19 +1,26 @@
 {
-  "name": "simple-projects",
-  "version": "1.0.0",
-  "description": "Simple projects.",
-  "main": "index.js",
-  "scripts": {
-    "build": "cd web && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "^3.2.5"
-  }
+	"name": "simple-projects",
+	"version": "1.0.0",
+	"description": "Simple projects.",
+	"main": "index.js",
+	"workspaces": [
+		"projects/*"
+	],
+	"scripts": {
+		"build": "cd web && npm run build",
+		"co": "sui-mono commit",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"prettier": "^3.2.5"
+	},
+	"dependencies": {
+		"@s-ui/mono": "^2.45.0"
+	}
 }
