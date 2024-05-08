@@ -20,15 +20,15 @@ export const Game = () => {
 				alignItems='center'
 				justifyContent='center'>
 				<IconButton onClick={getPrevQuestion} disabled={currentQuestion === 0}>
-					<ArrowBackIos />
+					<ArrowBackIos color='secondary' />
 				</IconButton>
-				<Typography>
+				<Typography fontWeight='bold' color='secondary'>
 					{currentQuestion + 1} / {questions.length}
 				</Typography>
 				<IconButton
 					onClick={getNextQuestion}
 					disabled={currentQuestion === questions.length - 1}>
-					<ArrowForwardIos />
+					<ArrowForwardIos color='secondary' />
 				</IconButton>
 			</Stack>
 			<Question info={questionInfo} />

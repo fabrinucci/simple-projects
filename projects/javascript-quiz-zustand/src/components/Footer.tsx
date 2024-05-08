@@ -16,7 +16,7 @@ export const Footer = () => {
 				marginTop: '10px',
 			}}>
 			<strong>{`Correctas ${correct} - Incorrectas ${incorrect} - Sin responder ${unanswered}`}</strong>
-			<Button onClick={() => reset()} color='info' variant='contained'>
+			<Button onClick={() => reset()} color='primary' variant='contained'>
 				Reiniciar
 			</Button>
 		</footer>

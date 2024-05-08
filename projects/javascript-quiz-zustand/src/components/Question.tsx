@@ -6,6 +6,7 @@ import {
 	ListItemText,
 	Typography,
 } from '@mui/material';
+import { green, red } from '@mui/material/colors';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { gradientDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -18,8 +19,8 @@ const getBackgroundColor = (info: IQuestion, asnwerIndex: number) => {
 	if (userSelectedAnswer == null) return 'transparent';
 	if (asnwerIndex !== correctAnswer && asnwerIndex !== userSelectedAnswer)
 		return 'transparent';
-	if (asnwerIndex === correctAnswer) return 'green';
-	if (asnwerIndex === userSelectedAnswer) return 'red';
+	if (asnwerIndex === correctAnswer) return green[600];
+	if (asnwerIndex === userSelectedAnswer) return red[600];
 
 	return 'transparent';
 };
@@ -34,18 +35,13 @@ export const Question = ({ info }: { info: IQuestion }) => {
 		<Card
 			sx={{
 				padding: '20px',
-				bgcolor: '#8125a9bc',
 			}}
 			variant='outlined'>
 			<Typography variant='h4'>{info.question}</Typography>
 			<SyntaxHighlighter language='javascript' style={gradientDark}>
 				{info.code}
 			</SyntaxHighlighter>
-			<List
-				sx={{
-					bgcolor: '#9734c1bb',
-				}}
-				disablePadding>
+			<List disablePadding>
 				{info.answers.map((answer, asnwerIndex) => (
 					<ListItem key={asnwerIndex} disablePadding divider>
 						<ListItemButton
